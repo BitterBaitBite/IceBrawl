@@ -22,17 +22,13 @@ void UPlayerBounce::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UPlayerBounce::HandleBounce(AActor* OtherActor, const FVector& HitNormal, const FVector& MyVelocity, const FVector& OtherVelocity)
+void UPlayerBounce::HandleBounce(AActor* OtherActor, const FVector& HitNormal, const FVector& MyVelocity, const FVector& OtherVelocity, const float& MyMass, const float& OtherMass)
 {
     if (OtherActor)
     {
         // Get velocities of both objects
         FVector MyCurrentVelocity = MyVelocity;
         FVector OtherCurrentVelocity = OtherVelocity;
-
-        // Get the mass of both objects (you may want to actually fetch these values dynamically)
-        float MyMass = 50.f;
-        float OtherMass = 50.f;
 
         // Calculate relative velocity
         FVector RelativeVelocity = MyCurrentVelocity - OtherCurrentVelocity;
@@ -59,17 +55,17 @@ void UPlayerBounce::HandleBounce(AActor* OtherActor, const FVector& HitNormal, c
         }
 
         // If you want to launch the other actor (if it's also a character), you could use similar logic
-        ACharacter* OtherCharacter = Cast<ACharacter>(OtherActor);
-        if (OtherCharacter)
-        {
-            // No need for the minus sign here
-            FVector FinalLaunchVelocity = OtherReflectiveVelocity;
-            OtherCharacter->LaunchCharacter(FinalLaunchVelocity, true, true);
+        //ACharacter* OtherCharacter = Cast<ACharacter>(OtherActor);
+        //if (OtherCharacter)
+        //{
+        //    // No need for the minus sign here
+        //    FVector FinalLaunchVelocity = OtherReflectiveVelocity;
+        //    OtherCharacter->LaunchCharacter(FinalLaunchVelocity, true, true);
 
-            // Debugging
-            FString VectorString = FinalLaunchVelocity.ToString();
-            FString NormalString = HitNormal.ToString();
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Launch Vel: " + VectorString + " | Normal: " + NormalString);
-        }
+        //    // Debugging
+        //    FString VectorString = FinalLaunchVelocity.ToString();
+        //    FString NormalString = HitNormal.ToString();
+        //    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Launch Vel: " + VectorString + " | Normal: " + NormalString);
+        //}
     }
 }
