@@ -3,6 +3,7 @@
 #include "Components/PrimitiveComponent.h"
 #include "GameFramework/Character.h"
 #include "Engine/World.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values for this component's properties
 UPlayerBounce::UPlayerBounce()
@@ -32,13 +33,19 @@ void UPlayerBounce::HandleBounce(AActor* OtherActor, const FVector& HitNormal, c
 
         // Calculate relative velocity
         FVector RelativeVelocity = MyCurrentVelocity - OtherCurrentVelocity;
+        /*FString RelativeVelocityString = RelativeVelocity.ToString();
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, RelativeVelocityString);*/
 
         // Compute the impulse magnitude based on the collision
         float ImpulseMagnitude = FVector::DotProduct(RelativeVelocity, HitNormal) * (1 + Restitution);
+        /*FString ImpulseString = FString::Printf(TEXT("Impulse: %.2f"), ImpulseMagnitude);
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, ImpulseString);*/
 
         // Compute the reflected velocities using the reflection formula
         FVector MyReflectiveVelocity = MyCurrentVelocity - (2 * ImpulseMagnitude * HitNormal) * (OtherMass / (MyMass + OtherMass));
-        FVector OtherReflectiveVelocity = OtherCurrentVelocity + (2 * ImpulseMagnitude * HitNormal) * (MyMass / (MyMass + OtherMass));
+        /*FString MyCurrentVelocityString = MyCurrentVelocity.ToString();
+        FString MyReflectiveVelocityString = MyReflectiveVelocity.ToString();
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "CurrentVel: " + MyCurrentVelocityString);*/
 
         // Apply the new velocity using LaunchCharacter
         ACharacter* MyCharacter = Cast<ACharacter>(GetOwner());
@@ -49,23 +56,9 @@ void UPlayerBounce::HandleBounce(AActor* OtherActor, const FVector& HitNormal, c
             MyCharacter->LaunchCharacter(FinalLaunchVelocity, true, true);
 
             // Debugging
-            FString VectorString = FinalLaunchVelocity.ToString();
+            /*FString VectorString = FinalLaunchVelocity.ToString();
             FString NormalString = HitNormal.ToString();
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Launch Vel: " + VectorString + " | Normal: " + NormalString);
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Launch Vel: " + VectorString + " | Normal: " + NormalString);*/
         }
-
-        // If you want to launch the other actor (if it's also a character), you could use similar logic
-        //ACharacter* OtherCharacter = Cast<ACharacter>(OtherActor);
-        //if (OtherCharacter)
-        //{
-        //    // No need for the minus sign here
-        //    FVector FinalLaunchVelocity = OtherReflectiveVelocity;
-        //    OtherCharacter->LaunchCharacter(FinalLaunchVelocity, true, true);
-
-        //    // Debugging
-        //    FString VectorString = FinalLaunchVelocity.ToString();
-        //    FString NormalString = HitNormal.ToString();
-        //    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Launch Vel: " + VectorString + " | Normal: " + NormalString);
-        //}
     }
 }
