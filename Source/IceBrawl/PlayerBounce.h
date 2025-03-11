@@ -30,5 +30,5 @@ public:
 
     // Coefficient of restitution (bounciness factor)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float Restitution = 1.0f; // 1.0 for fully elastic collision, 0 for inelastic
+    float Restitution = 0.1f; // 1.0 for fully elastic collision, 0 for inelastic
 };
