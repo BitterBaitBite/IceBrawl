@@ -26,11 +26,9 @@ public:
 
     // Bounce functionality
     UFUNCTION(BlueprintCallable)
-    void HandleBounce(AActor* OtherActor, const FVector& HitNormal, const FVector& MyVelocity, const FVector& OtherVelocity);
+    void HandleBounce(AActor* OtherActor, const FVector& HitNormal, const FVector& MyVelocity, const FVector& OtherVelocity, const float& MyMass, const float& OtherMass);
 
-private:
     // Coefficient of restitution (bounciness factor)
-    float Restitution = 1.0f; // 1.0 for fully elastic collision, 0 for inelastic
-
-		
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float Restitution = 0.1f; // 1.0 for fully elastic collision, 0 for inelastic
 };
